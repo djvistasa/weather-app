@@ -13,9 +13,8 @@ function App(): JSX.Element {
   return (
     <StyledSafeAreaView>
       <QueryClientProvider client={new QueryClient()}>
-
         <ThemeProvider theme={theme}>
-          <StatusBar barStyle={'light-content'} />
+          <StatusBar barStyle={'dark-content'} />
           <Navigation />
         </ThemeProvider>
       </QueryClientProvider>

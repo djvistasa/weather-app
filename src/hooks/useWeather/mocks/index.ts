@@ -1,4 +1,6 @@
-const weatherToday = {
+import { ITodaysWeatherResponse } from '../types';
+
+const weatherToday: ITodaysWeatherResponse = {
   coord: {
     lon: 10.99,
     lat: 44.34,
