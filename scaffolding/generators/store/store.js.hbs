@@ -1,0 +1,14 @@
+/**
+  *
+  * {{ properCase name }}
+  *
+  */
+
+import { action } from 'easy-peasy';
+
+export const {{ camelCase name }} = {
+  item: {},
+  add: action((state, payload) => {
+    state.{{ camelCase name }} = payload; // eslint-disable-line
+  }),
+}
