@@ -30,7 +30,10 @@ const StyledDayContainer = styled.View`
 `;
 
 const StyledTemperatureInDegrees = styled.View`
-  width: 52px;
+  width: 95px;
+  padding-right: 5px;
+  flex-direction: row;
+  justify-content: flex-end;
 `;
 
 export {

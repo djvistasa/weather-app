@@ -63,7 +63,7 @@ function WeatherForecastView({
           <StyledTemperatureInDegrees>
             <TemperatureInDegrees
               temperature={temperature}
-              degreeOffset={-2}
+              degreeOffset={-12}
               symbolSize={10}
               fontSize={18}
               fontWeight={700}
