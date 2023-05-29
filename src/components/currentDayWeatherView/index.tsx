@@ -29,7 +29,7 @@ function CurrentDayWeatherView({
 }: ICurrentDayWeatherViewProps): JSX.Element {
   const { colors } = useTheme();
 
-  const getImageByType = () => {
+  const getImageAndBackgroundColorKeyByType = () => {
     switch (type) {
       case WeatherCondition.Sunny:
         return WeatherConditionType.Sunny;
@@ -45,7 +45,7 @@ function CurrentDayWeatherView({
   return (
     <StyledCurrentDayWeatherViewContainer>
       <StyledCurrentDayWeatherView
-        source={icons[getImageByType()]}
+        source={icons[getImageAndBackgroundColorKeyByType()]}
         resizeMode="cover"
       >
         <StyledTemperature>
@@ -61,7 +61,7 @@ function CurrentDayWeatherView({
         </StyledText>
       </StyledCurrentDayWeatherView>
       <CurrentDayWeatherSummary
-        backgroundColor={colors[getImageByType()]}
+        backgroundColor={colors[getImageAndBackgroundColorKeyByType()]}
         minimumTemperature={minimumTemperature}
         maximumTemperature={maximumTemperature}
         currentTemperature={currentTemperature}

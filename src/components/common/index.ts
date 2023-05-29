@@ -15,8 +15,9 @@ const StyledText = styled.Text<IStyledTextProps>`
     theme: {
       colors: { white },
     },
-  }) => white};
-  font-size: ${({ fontSize }) => (fontSize && fontSize) || 30}px;
+    color,
+  }) => color || white};
+  font-size: ${({ fontSize }) => fontSize || 30}px;
   ${({ isUpperCase }) => isUpperCase && 'text-transform:uppercase'};
   ${({ fontWeight }) => fontWeight && `font-weight: ${fontWeight}`};
 `;

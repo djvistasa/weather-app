@@ -7,6 +7,14 @@ declare module 'styled-components/native' {
       sunny: string;
       cloudy: string;
       rainy: string;
+      transparency: string;
+      error: string;
+      success: string;
+      warning: string;
+    };
+    dimensions: {
+      screenWidth: number;
+      screenHeight: number;
     };
   }
 }

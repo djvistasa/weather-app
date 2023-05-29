@@ -1,31 +1,41 @@
 import { useCallback, useEffect, useState } from 'react';
 import Geolocation from 'react-native-geolocation-service';
 
+import { ModalType } from '../../components/modal/enums';
+import { useModalContext } from '../../context';
 import useLocationPermission from '../useLocationPermission';
 import { ICoordinates } from '../useWeather/types';
+
 const useDeviceLocation = () => {
   const hasUserGrantedLocationPermission = useLocationPermission();
+  const {
+    ui: { showModal, hideModal },
+  } = useModalContext();
 
   const [deviceLocation, setDeviceLocation] = useState<ICoordinates>();
-  const [shouldRetry, setShouldRetry] = useState<boolean>(false);
-  // const [userAddress, setUserAddress] = useState<Address>();
-  // const [geoCodeResults, setGeoCodeResults] = useState<
-  //   AutoCompleteSelectOption[]
-  // >([]);
-
-  // const handleRetry: () => void = useCallback(() => {
-  //   setShouldRetry(true);
-  // }, [hideModal]);
 
   const getDeviceLocation = useCallback(
     () =>
       Geolocation.getCurrentPosition(
         ({ coords: { latitude, longitude } }) => {
-          setShouldRetry(false);
-          setDeviceLocation({ latitude, longitude });
+          if (!deviceLocation) {
+            setDeviceLocation({ latitude, longitude });
+          }
         },
-        (_error) => {
-          setShouldRetry(false);
+        (error) => {
+          showModal({
+            message: error.message,
+            title: 'Location Error',
+            type: ModalType.Error,
+            primaryAction: () => {
+              getDeviceLocation();
+            },
+            primaryActionTitle: 'Retry',
+            secondaryActionTitle: 'Cancel',
+            secondaryAction: () => {
+              hideModal();
+            },
+          });
         },
         {
           accuracy: {
@@ -41,88 +51,14 @@ const useDeviceLocation = () => {
           showLocationDialog: true,
         },
       ),
-    [],
+    [deviceLocation, showModal, hideModal],
   );
 
-  // const formatLocationSearchResults = (
-  //   results: LocationSearchResult[],
-  // ): AutoCompleteSelectOption[] =>
-  //   results.map(({ address: title, location: value }) => ({
-  //     title,
-  //     value,
-  //   }));
-
-  // const handleGeoCode = debounce(async (address: string) => {
-  //   if (userAddress) {
-  //     const { ok, error, result } = await LocationApi.geoCode(
-  //       address,
-  //       userAddress.coords,
-  //     );
-
-  //     if (error) {
-  //       return showModal({
-  //         message: error,
-  //         primaryAction: () => false,
-  //         primaryActionTitle: 'Okay',
-  //         secondaryAction: hideModal,
-  //         secondaryActionTitle: 'Cancel',
-  //         type: DialogType.Error,
-  //       });
-  //     }
-
-  //     if (ok && result && result.candidates) {
-  //       const formattedResults = formatLocationSearchResults(result.candidates);
-  //       setGeoCodeResults(formattedResults);
-  //     }
-  //   }
-  // }, 600);
-
-  // const handleReverseGeoCode = useCallback(
-  //   async ({ latitude, longitude }: Coords) => {
-  //     const { error, ok, result } = await LocationApi.reverseGeoCode({
-  //       longitude,
-  //       latitude,
-  //     });
-
-  //     if (error) {
-  //       return showModal({
-  //         message: error,
-  //         primaryAction: () => false,
-  //         primaryActionTitle: 'Okay',
-  //         secondaryAction: hideModal,
-  //         secondaryActionTitle: 'Cancel',
-  //         type: DialogType.Error,
-  //       });
-  //     }
-
-  //     if (ok && result) {
-  //       const {
-  //         address: { LongLabel },
-  //       } = result;
-
-  //       setUserAddress({
-  //         coords: { latitude, longitude },
-  //         description: LongLabel,
-  //       });
-  //     }
-  //   },
-  //   [hideModal, showModal],
-  // );
-
   useEffect(() => {
-    if (hasUserGrantedLocationPermission || shouldRetry) {
+    if (hasUserGrantedLocationPermission) {
       getDeviceLocation();
     }
-  }, [getDeviceLocation, hasUserGrantedLocationPermission, shouldRetry]);
-
-  // useEffect(() => {
-  //   if (deviceLocation?.latitude && deviceLocation?.longitude) {
-  //     handleReverseGeoCode({
-  //       latitude: deviceLocation.latitude,
-  //       longitude: deviceLocation.longitude,
-  //     });
-  //   }
-  // }, [hideModal, deviceLocation, showModal, handleReverseGeoCode]);
+  }, [getDeviceLocation, hasUserGrantedLocationPermission]);
 
   return {
     deviceLocation,

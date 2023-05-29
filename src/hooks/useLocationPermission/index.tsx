@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Alert, PermissionsAndroid, Platform } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import { ModalType } from '../../components/modal/enums';
+import { useModalContext } from '../../context';
 import useAppSettings from '../useAppSettings';
 
 function useLocationPermission() {
   const openAppSettings = useAppSettings();
+  const {
+    ui: { showModal, hideModal },
+  } = useModalContext();
   const [hasGrantedPermission, setHasGrantedPermission] =
     useState<boolean>(false);
 
@@ -14,27 +19,18 @@ function useLocationPermission() {
 
   const showErrorDialog = useCallback(
     () =>
-      Alert.alert(
-        'Confirmation',
-        'Are you sure you want to proceed?',
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-            onPress: () => false,
-          },
-          {
-            text: 'OK',
-            onPress: () => {
-              // Handle OK action
-              openSettings();
-            },
-          },
-        ],
-        { cancelable: true },
-      ),
-
-    [openSettings],
+      showModal({
+        message: 'Please enable location permissions in settings.',
+        primaryAction: openSettings,
+        primaryActionTitle: 'Open Settings',
+        secondaryActionTitle: 'Cancel',
+        secondaryAction: () => {
+          hideModal();
+        },
+        title: 'Location Error',
+        type: ModalType.Error,
+      }),
+    [openSettings, showModal, hideModal],
   );
 
   const checkPermissionIOS = useCallback(async () => {

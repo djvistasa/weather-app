@@ -1,6 +1,13 @@
+import { ButtonVariant } from './enums';
+
 interface IButtonProps {
   title: string;
   onPress: () => void;
+  variant: ButtonVariant;
 }
 
-export type { IButtonProps };
+interface IStyledButtonProps {
+  backgroundColor: string;
+}
+
+export type { IButtonProps, IStyledButtonProps };

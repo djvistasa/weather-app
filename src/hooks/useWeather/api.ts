@@ -11,7 +11,9 @@ const getTodaysWeatherByLocation = async ({
   );
 
   if (!response.ok) {
-    return handleAPiError(response.statusText);
+    return handleAPiError(
+      response.statusText || 'Unknown error occurred. Please try again later.',
+    );
   }
 
   const result = await response.json();

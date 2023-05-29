@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import { useMutation } from 'react-query';
+import { ModalType } from '../../components/modal/enums';
+import { useModalContext } from '../../context';
 import {
   formatTodaysWeatherResponse,
   formatWeatherForecastResponse,
@@ -21,6 +23,11 @@ import {
 function useWeather() {
   const [todaysWeather, setTodaysWeather] = useState<ITodaysWeather>();
   const [weatherForecast, setWeatherForecast] = useState<IWeatherForecast[]>();
+  const [retryTodaysWeatherCall, setRetryTodaysWeatherCall] =
+    useState<boolean>(true);
+  const {
+    ui: { showModal, hideModal },
+  } = useModalContext();
 
   const {
     mutate: getTodaysWeather,
@@ -30,14 +37,32 @@ function useWeather() {
     'getTodaysWeather',
     (coords: ICoordinates) => getTodaysWeatherByLocation(coords),
     {
-      onSuccess: ({ result }: IApiResponse) => {
-        const formattedData = formatTodaysWeatherResponse(
-          result as ITodaysWeatherResponse,
-        );
-        setTodaysWeather(formattedData);
-      },
-      onError: (error) => {
-        Alert.alert('Error', error as string);
+      onSuccess: ({ result, ok, error }: IApiResponse) => {
+        if (error) {
+          return showModal({
+            title: 'Error',
+            message: new Error(error as string).message,
+            primaryActionTitle: 'Retry',
+            presentationStyle: 'overFullScreen',
+            isTransparent: true,
+            primaryAction: () => {
+              setRetryTodaysWeatherCall(true);
+            },
+            secondaryActionTitle: 'Cancel',
+            secondaryAction: () => {
+              hideModal();
+            },
+            type: ModalType.Error,
+          });
+        }
+
+        if (ok && result) {
+          const formattedData = formatTodaysWeatherResponse(
+            result as ITodaysWeatherResponse,
+          );
+          setTodaysWeather(formattedData);
+          setRetryTodaysWeatherCall(false);
+        }
       },
     },
   );
@@ -71,6 +96,7 @@ function useWeather() {
     isWeatherForecastLoading,
     getWeatherForecastError,
     weatherForecast,
+    retryTodaysWeatherCall,
   };
 }
 
