@@ -132,9 +132,13 @@ const calculateAverageDailyTemperature = (temperatures: number[]) =>
   temperatures.reduce((sum, temperature) => sum + temperature, 0) /
   temperatures.length;
 
+const truncate = (input: string, limit: number) =>
+  input.length > limit ? `${input.substring(0, limit)}...` : input;
+
 export {
   formatTodaysWeatherResponse,
   formatWeatherForecastResponse,
   handleAPiError,
   handleApiSuccess,
+  truncate,
 };

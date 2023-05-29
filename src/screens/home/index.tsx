@@ -9,6 +9,7 @@ import CurrentDayWeatherView from '../../components/currentDayWeatherView';
 import WeatherForecastView from '../../components/weatherForecastView';
 import useDeviceLocation from '../../hooks/useDeviceLocation';
 import useWeather from '../../hooks/useWeather';
+import { ICoordinates } from '../../hooks/useWeather/types';
 
 function Home(): JSX.Element {
   const {
@@ -21,6 +22,13 @@ function Home(): JSX.Element {
   } = useWeather();
 
   const { deviceLocation } = useDeviceLocation();
+
+  const handleLocationSearch = (searchTerm: string) => {
+    console.log(searchTerm);
+  };
+  const handleLocationSelect = (location: ICoordinates) => {
+    console.log(location);
+  };
 
   useEffect(() => {
     if (deviceLocation) {
@@ -37,7 +45,11 @@ function Home(): JSX.Element {
   return (
     <StyledApplicationWrapper>
       {!isWeatherLoading && todaysWeather && (
-        <CurrentDayWeatherView todaysWeather={todaysWeather} />
+        <CurrentDayWeatherView
+          todaysWeather={todaysWeather}
+          onLocationSearch={handleLocationSearch}
+          onLocationSelect={handleLocationSelect}
+        />
       )}
       {!isWeatherForecastLoading && weatherForecast && todaysWeather && (
         <WeatherForecastView
