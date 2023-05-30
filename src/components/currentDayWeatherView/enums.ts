@@ -1,7 +1,7 @@
 enum WeatherCondition {
   Sunny = 'Sunny',
-  Rainy = 'Rainy',
-  Cloudy = 'Cloudy',
+  Rainy = 'Rain',
+  Cloudy = 'Clouds',
 }
 
 enum WeatherConditionType {

@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 
 const StyledAutoComplete = styled.View`
   width: 100%;
-  background-color: 'transparent';
   z-index: 9999;
 `;
 

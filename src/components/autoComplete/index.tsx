@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Keyboard } from 'react-native';
 import { truncate } from '../../utils';
 import TextInput from '../textInput';
@@ -23,45 +23,47 @@ function AutoComplete({
   options,
   onChangeText,
   placeholder,
-  searchValue,
   errorMessage,
   label,
   labelColor,
   borderColor,
-  defaultValue,
 }: IAutoCompleteProps): JSX.Element {
   const [areOptionsVisible, setAreOptionsVisible] = useState<boolean>(
     options.length > 0,
   );
 
-  const [activeOption, setActiveOption] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const handleOptionSelect = useCallback(
-    ({ x, y }: ILocationResultCoords, title: string) => {
-      setAreOptionsVisible(false);
-      onSelect({ latitude: x, longitude: y }, title);
-      setActiveOption(title);
-      Keyboard.dismiss();
-    },
-    [onSelect],
-  );
+  const handleOptionSelect = (
+    { x, y }: ILocationResultCoords,
+    title: string,
+  ) => {
+    onSelect({ latitude: x, longitude: y }, title);
+    setAreOptionsVisible(false);
+    setSearchTerm('');
+    Keyboard.dismiss();
+  };
 
   const handleChange = (value: string) => {
     onChangeText(value);
+    setSearchTerm(value);
   };
+
+  useEffect(() => {
+    setAreOptionsVisible(true);
+  }, [options]);
 
   return (
     <StyledAutoComplete>
       <StyledSearchWrapper>
         <TextInput
-          onChangeText={(value) => handleChange(value)}
+          onChangeText={(value: string) => handleChange(value)}
           placeholder={truncate(placeholder as string, 40)}
-          value={truncate(searchValue || activeOption, 40)}
           label={label}
           errorMessage={errorMessage}
           labelColor={labelColor}
           borderColor={borderColor}
-          defaultValue={defaultValue}
+          value={searchTerm}
         />
       </StyledSearchWrapper>
       {areOptionsVisible && (

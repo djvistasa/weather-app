@@ -4,6 +4,7 @@ declare module 'styled-components/native' {
   export interface DefaultTheme {
     colors: {
       white: string;
+      white50: string;
       sunny: string;
       cloudy: string;
       rainy: string;

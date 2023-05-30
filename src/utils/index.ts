@@ -5,6 +5,7 @@ import {
   IWeatherForecast,
   IWeatherForecastResponse,
 } from '../hooks/useWeather/types';
+import { IRequestParams } from './types';
 
 const handleAPiError = (error: unknown) => ({
   ok: false,
@@ -135,10 +136,45 @@ const calculateAverageDailyTemperature = (temperatures: number[]) =>
 const truncate = (input: string, limit: number) =>
   input.length > limit ? `${input.substring(0, limit)}...` : input;
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+function debounce<T extends Function>(callBack: T, delay = 20) {
+  let timeOut: ReturnType<typeof setTimeout> = setTimeout(() => false);
+  const callable = (...args: any) => {
+    clearTimeout(timeOut);
+
+    timeOut = setTimeout(() => callBack(...args), delay);
+  };
+  return <T>(<any>callable);
+}
+
+const makeApiCall = async ({ url, method }: IRequestParams) => {
+  try {
+    const response = await fetch(url, {
+      method,
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      const message = JSON.parse(error)?.message;
+      return handleAPiError(
+        message || 'Unknown error occurred. Please try again later.',
+      );
+    }
+
+    const result = await response.json();
+
+    return handleApiSuccess(result);
+  } catch (error) {
+    return handleAPiError(error);
+  }
+};
+
 export {
+  debounce,
   formatTodaysWeatherResponse,
   formatWeatherForecastResponse,
   handleAPiError,
   handleApiSuccess,
+  makeApiCall,
   truncate,
 };

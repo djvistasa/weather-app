@@ -20,10 +20,13 @@ function TextInput({
   errorMessage,
   borderColor,
   onChangeText,
+  placeholder,
+  value,
 }: ITextInputProps): JSX.Element {
   const {
-    colors: { white },
+    colors: { white50 },
   } = useTheme();
+
   return (
     <>
       {label ? <StyledFieldLabel>{label}</StyledFieldLabel> : null}
@@ -31,8 +34,10 @@ function TextInput({
         <StyledTextInput
           selectionColor={borderColor}
           numberOfLines={multiline ? 3 : 0}
-          placeholderTextColor={white}
+          placeholderTextColor={white50}
           onChangeText={onChangeText}
+          placeholder={placeholder}
+          value={value}
         />
 
         {errorMessage ? (

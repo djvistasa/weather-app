@@ -4,6 +4,7 @@ import { DefaultTheme } from 'styled-components/native';
 export const theme: DefaultTheme = {
   colors: {
     white: '#ffffff',
+    white50: '#ffffff50',
     sunny: '#4a90e2',
     cloudy: '#628594',
     rainy: '#686868',

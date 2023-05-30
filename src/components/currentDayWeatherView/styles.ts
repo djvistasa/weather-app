@@ -14,14 +14,7 @@ const StyledTemperature = styled.View`
   margin-bottom: 10px;
 `;
 
-const StyledAutoCompeteWrapper = styled.View`
-  width: ${({ theme: { dimensions } }) => dimensions.screenWidth - 20}px;
-  position: absolute;
-  top: 20px;
-`;
-
 export {
-  StyledAutoCompeteWrapper,
   StyledCurrentDayWeatherView,
   StyledCurrentDayWeatherViewContainer,
   StyledTemperature,

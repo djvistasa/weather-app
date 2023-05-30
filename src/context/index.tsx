@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import Modal from '../components/modal';
 import { defaultModal } from './mockData';
 import {
@@ -30,37 +30,42 @@ const AppContextProvider = ({ children }: IModalContext) => {
   const [modalState, setModalState] = useState<IModalState>(defaultModal);
   const [profile, setProfile] = useState<IUserProfileState>();
 
-  const showModal = ({
-    title,
-    primaryAction,
-    secondaryAction,
-    primaryActionTitle,
-    secondaryActionTitle,
-    type,
-    message,
-    children: modalChildren,
-    presentationStyle,
-  }: IModalState) => {
-    setModalState({
-      message,
-      isVisible: true,
+  const showModal = useCallback(
+    ({
       title,
       primaryAction,
       secondaryAction,
       primaryActionTitle,
       secondaryActionTitle,
       type,
+      message,
       children: modalChildren,
       presentationStyle,
-    });
-  };
+    }: IModalState) => {
+      setModalState({
+        message,
+        isVisible: true,
+        title,
+        primaryAction,
+        secondaryAction,
+        primaryActionTitle,
+        secondaryActionTitle,
+        type,
+        children: modalChildren,
+        presentationStyle,
+      });
+    },
+    [],
+  );
 
-  const hideModal = () => {
+  const hideModal = useCallback(() => {
     setModalState(defaultModal);
-  };
+  }, []);
 
-  const updateProfile = (newProfile: IUserProfileState) =>
-    setProfile(newProfile);
+  const updateProfile = useCallback(
+    (newProfile: IUserProfileState) => setProfile(newProfile),
+    [],
+  );
 
   return (
     <AppContext.Provider

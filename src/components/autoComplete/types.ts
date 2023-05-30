@@ -23,4 +23,8 @@ interface IAutoCompleteProps {
   defaultValue?: string;
 }
 
-export type { IAutoCompleteProps, ILocationResultCoords };
+export type {
+  IAutoCompleteProps,
+  ILocationResultCoords,
+  IAutoCompleteSelectOption,
+};
