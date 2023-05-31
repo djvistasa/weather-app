@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { ModalType } from '../../components/modal/enums';
-import { useModalContext } from '../../context';
+import { useAppContext } from '../../context';
 import {
   formatTodaysWeatherResponse,
   formatWeatherForecastResponse,
@@ -23,7 +23,7 @@ function useWeather() {
 
   const {
     ui: { showModal, hideModal },
-  } = useModalContext();
+  } = useAppContext();
 
   const getTodaysWeather = useCallback(
     async (coords: ICoordinates) => {

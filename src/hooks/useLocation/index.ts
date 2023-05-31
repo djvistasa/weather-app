@@ -3,7 +3,7 @@ import Geolocation from 'react-native-geolocation-service';
 
 import { IAutoCompleteSelectOption } from '../../components/autoComplete/types';
 import { ModalType } from '../../components/modal/enums';
-import { useModalContext } from '../../context';
+import { useAppContext } from '../../context';
 import { debounce } from '../../utils';
 import useLocationPermission from '../useLocationPermission';
 import { ICoordinates } from '../useWeather/types';
@@ -14,8 +14,8 @@ const useLocation = () => {
   const hasUserGrantedLocationPermission = useLocationPermission();
   const {
     ui: { showModal, hideModal },
-    user: { addFavoriteLocation, profile },
-  } = useModalContext();
+    user: { addFavoriteLocation },
+  } = useAppContext();
 
   const [deviceLocation, setDeviceLocation] = useState<ICoordinates>();
   const [address, setAddress] = useState<IAddress>();
@@ -89,10 +89,6 @@ const useLocation = () => {
       addFavoriteLocation(address);
     }
   };
-
-  useEffect(() => {
-    console.log(profile);
-  }, [profile]);
 
   useEffect(() => {
     if (hasUserGrantedLocationPermission && !deviceLocation) {

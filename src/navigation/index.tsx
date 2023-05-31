@@ -1,18 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
-import useAppState from '../hooks/useAppState';
+
+import useHydration from '../hooks/useHydration';
 import Home from '../screens/home';
 import { RootStackParamList } from './types';
 
 function Navigation(): JSX.Element {
   const Stack = createNativeStackNavigator<RootStackParamList>();
-  const appState = useAppState();
-
+  const { hydrateContext } = useHydration();
   useEffect(() => {
-    console.log({ appState });
-  }, [appState]);
-
+    hydrateContext();
+  }, [hydrateContext]);
   return (
     <NavigationContainer>
       <Stack.Navigator

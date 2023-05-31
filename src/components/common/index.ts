@@ -23,13 +23,20 @@ const StyledText = styled.Text<IStyledTextProps>`
 `;
 
 const StyledAutoCompeteWrapper = styled.View`
-  width: ${({ theme: { dimensions } }) => dimensions.screenWidth - 20}px;
+  flex-direction: row;
+  flex: 1;
+`;
+
+const StyledActionsWrapper = styled.View`
+  width: 100%;
   position: absolute;
   top: 20px;
-  align-self: center;
+  flex-direction: row;
+  padding: 0 20px;
 `;
 
 export {
+  StyledActionsWrapper,
   StyledApplicationWrapper,
   StyledAutoCompeteWrapper,
   StyledSafeAreaView,

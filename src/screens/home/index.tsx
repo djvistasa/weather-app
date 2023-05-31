@@ -7,10 +7,12 @@ import React, { useEffect } from 'react';
 
 import AutoComplete from '../../components/autoComplete';
 import {
+  StyledActionsWrapper,
   StyledApplicationWrapper,
   StyledAutoCompeteWrapper,
 } from '../../components/common';
 import CurrentDayWeatherView from '../../components/currentDayWeatherView';
+import FavoritesButton from '../../components/favoritesButton';
 import WeatherForecastView from '../../components/weatherForecastView';
 import useLocation from '../../hooks/useLocation';
 import useWeather from '../../hooks/useWeather';
@@ -43,7 +45,9 @@ function Home(): JSX.Element {
     getTodaysWeather(location);
   };
 
-  const handleAddLocationToFavorites = () => addAddressToFavorites();
+  const handleAddLocationToFavorites = () => {
+    addAddressToFavorites();
+  };
 
   useEffect(() => {
     if (deviceLocation) {
@@ -67,14 +71,17 @@ function Home(): JSX.Element {
           onAddToFavorites={handleAddLocationToFavorites}
         />
       )}
-      <StyledAutoCompeteWrapper>
-        <AutoComplete
-          onSelect={handleLocationSelect}
-          options={addressSuggestions}
-          onChangeText={handleLocationSearch}
-          placeholder="Search for a location"
-        />
-      </StyledAutoCompeteWrapper>
+      <StyledActionsWrapper>
+        <StyledAutoCompeteWrapper>
+          <AutoComplete
+            onSelect={handleLocationSelect}
+            options={addressSuggestions}
+            onChangeText={handleLocationSearch}
+            placeholder="Search for a location"
+          />
+        </StyledAutoCompeteWrapper>
+        <FavoritesButton />
+      </StyledActionsWrapper>
     </StyledApplicationWrapper>
   );
 }

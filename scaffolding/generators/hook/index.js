@@ -20,7 +20,7 @@ module.exports = {
       },
     },
   ],
-  actions: (data) => {
+  actions: () => {
     // Generate index.js and index.test.js
     const componentTemplate = './hook/hook.js.hbs';
 

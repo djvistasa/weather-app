@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import Modal from '../components/modal';
 import { ModalType } from '../components/modal/enums';
+import useHydration from '../hooks/useHydration';
 import { IAddress } from '../hooks/useLocation/types';
 import { defaultModal, defaultUserProfile } from './mockData';
 import {
@@ -27,13 +28,14 @@ const AppContext = createContext<{
   },
 });
 
-export const useModalContext = () => useContext(AppContext);
+export const useAppContext = () => useContext(AppContext);
 
 const AppContextProvider = ({ children }: IModalContext) => {
   const [modalState, setModalState] = useState<IModalState>(defaultModal);
   const [profile, setProfile] = useState<IUserProfileState>(
     defaultUserProfile.profile,
   );
+  const { hydrateSandbox } = useHydration();
 
   const showModal = useCallback(
     ({
@@ -67,14 +69,12 @@ const AppContextProvider = ({ children }: IModalContext) => {
     setModalState(defaultModal);
   }, []);
 
-  const updateProfile = useCallback(
-    (newProfile: IUserProfileState) => setProfile(newProfile),
-    [],
-  );
+  const updateProfile = useCallback((newProfile: IUserProfileState) => {
+    setProfile(newProfile);
+  }, []);
 
   const addFavoriteLocation = useCallback(
     (newAddress: IAddress) => {
-      // check if location is already in favorites
       const isAddressAlreadyInFavorites = profile.favoriteLocations.find(
         ({ coords, title }) =>
           title === newAddress.title &&
@@ -97,8 +97,9 @@ const AppContextProvider = ({ children }: IModalContext) => {
       profile.favoriteLocations.push(newAddress);
 
       setProfile({ ...profile });
+      hydrateSandbox({ ...profile });
     },
-    [profile, setProfile, showModal, hideModal],
+    [profile, hydrateSandbox, showModal, hideModal],
   );
 
   return (

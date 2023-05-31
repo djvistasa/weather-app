@@ -97,7 +97,6 @@ const groupTemperaturesByDay = (forecastItems: IWeatherForecast[]) => {
 const formatTemperatures = (groupedTemperatures: IGroupedTemperatures) => {
   const formattedTemperatures: IWeatherForecast[] = [];
   for (const dayOfWeek in groupedTemperatures) {
-    // console.log(dayOfWeek);
     formattedTemperatures.push({
       day: dayOfWeek,
       temperature: parseFloat(
