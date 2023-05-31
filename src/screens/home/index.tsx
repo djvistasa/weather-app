@@ -5,6 +5,8 @@
  */
 import React, { useEffect } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AutoComplete from '../../components/autoComplete';
 import {
   StyledActionsWrapper,
@@ -17,6 +19,7 @@ import WeatherForecastView from '../../components/weatherForecastView';
 import useLocation from '../../hooks/useLocation';
 import useWeather from '../../hooks/useWeather';
 import { ICoordinates } from '../../hooks/useWeather/types';
+import { RootStackParamList } from '../../navigation/types';
 
 function Home(): JSX.Element {
   const {
@@ -33,6 +36,11 @@ function Home(): JSX.Element {
     updateAddress,
     addAddressToFavorites,
   } = useLocation();
+
+  const { navigate } =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const handleFavorites = () => navigate('FavoriteLocations');
 
   const handleLocationSearch = (searchTerm: string) => {
     if (searchTerm.length > 0) {
@@ -80,7 +88,7 @@ function Home(): JSX.Element {
             placeholder="Search for a location"
           />
         </StyledAutoCompeteWrapper>
-        <FavoritesButton />
+        <FavoritesButton onPress={handleFavorites} />
       </StyledActionsWrapper>
     </StyledApplicationWrapper>
   );
