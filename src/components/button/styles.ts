@@ -6,7 +6,7 @@ const StyledButton = styled.TouchableOpacity<IStyledButtonProps>`
   width: 100%;
   background-color: ${({ theme: { colors: sunny }, backgroundColor }) =>
     backgroundColor || sunny};
-  flex: 1;
+
   height: 55px;
   align-items: center;
   justify-content: center;

@@ -13,7 +13,7 @@ import { IButtonProps } from './types';
 
 function Button({ onPress, title, variant }: IButtonProps): JSX.Element {
   const {
-    colors: { sunny, error },
+    colors: { sunny, error, success },
   } = useTheme();
   const getBackgroundColorByVariant = () => {
     switch (variant) {
@@ -21,9 +21,8 @@ function Button({ onPress, title, variant }: IButtonProps): JSX.Element {
         return sunny;
       case ButtonVariant.Secondary:
         return error;
-
       default:
-        return sunny;
+        return success;
     }
   };
   return (

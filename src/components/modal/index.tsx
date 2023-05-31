@@ -60,7 +60,7 @@ function Modal(): JSX.Element {
     <StyledModal
       visible={!!isVisible}
       presentationStyle={presentationStyle || 'pageSheet'}
-      transparent={!!isTransparent}
+      transparent={isTransparent}
       onRequestClose={hideModal}
     >
       <StyledSafeAreaView>

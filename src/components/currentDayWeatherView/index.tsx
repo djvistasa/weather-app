@@ -52,11 +52,11 @@ function CurrentDayWeatherView({
           <TemperatureInDegrees
             temperature={currentTemperature}
             fontWeight={800}
-            fontSize={40}
+            fontSize={30}
             isUpperCase
           />
         </StyledTemperature>
-        <StyledText isUpperCase fontWeight={600}>
+        <StyledText isUpperCase fontWeight={600} fontSize={25}>
           {description}
         </StyledText>
       </StyledCurrentDayWeatherView>

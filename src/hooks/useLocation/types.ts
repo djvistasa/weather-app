@@ -1,4 +1,5 @@
 import { ILocationResultCoords } from '../../components/autoComplete/types';
+import { ICoordinates } from '../useWeather/types';
 
 interface ILocationResultItem {
   address: string;
@@ -15,7 +16,7 @@ interface ILocationResultItem {
   };
 }
 
-interface GeoCodeResponse {
+interface IGeoCodeResponse {
   spatialReference: {
     wkid: number;
     latestWkid: number;
@@ -23,4 +24,9 @@ interface GeoCodeResponse {
   candidates: ILocationResultItem[];
 }
 
-export type { ILocationResultItem, GeoCodeResponse };
+interface IAddress {
+  title: string;
+  coords: ICoordinates;
+}
+
+export type { IAddress, IGeoCodeResponse, ILocationResultItem };

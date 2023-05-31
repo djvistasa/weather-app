@@ -15,7 +15,6 @@ import WeatherForecastView from '../../components/weatherForecastView';
 import useLocation from '../../hooks/useLocation';
 import useWeather from '../../hooks/useWeather';
 import { ICoordinates } from '../../hooks/useWeather/types';
-import { debounce } from '../../utils';
 
 function Home(): JSX.Element {
   const {
@@ -25,18 +24,26 @@ function Home(): JSX.Element {
     getWeatherForecast,
   } = useWeather();
 
-  const { getAddressSuggestions, addressSuggestions } = useLocation();
+  const {
+    getAddressSuggestions,
+    addressSuggestions,
+    deviceLocation,
+    updateAddress,
+    addAddressToFavorites,
+  } = useLocation();
 
-  const { deviceLocation } = useLocation();
-
-  const handleLocationSearch = debounce((searchTerm: string) => {
+  const handleLocationSearch = (searchTerm: string) => {
     if (searchTerm.length > 0) {
       getAddressSuggestions(searchTerm);
     }
-  }, 500);
+  };
 
-  const handleLocationSelect = (location: ICoordinates) =>
+  const handleLocationSelect = (location: ICoordinates, title: string) => {
+    updateAddress({ coords: location, title });
     getTodaysWeather(location);
+  };
+
+  const handleAddLocationToFavorites = () => addAddressToFavorites();
 
   useEffect(() => {
     if (deviceLocation) {
@@ -57,6 +64,7 @@ function Home(): JSX.Element {
         <WeatherForecastView
           weatherForecast={weatherForecast}
           weatherCondition={todaysWeather.type}
+          onAddToFavorites={handleAddLocationToFavorites}
         />
       )}
       <StyledAutoCompeteWrapper>

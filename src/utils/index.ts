@@ -97,6 +97,7 @@ const groupTemperaturesByDay = (forecastItems: IWeatherForecast[]) => {
 const formatTemperatures = (groupedTemperatures: IGroupedTemperatures) => {
   const formattedTemperatures: IWeatherForecast[] = [];
   for (const dayOfWeek in groupedTemperatures) {
+    // console.log(dayOfWeek);
     formattedTemperatures.push({
       day: dayOfWeek,
       temperature: parseFloat(
@@ -108,26 +109,8 @@ const formatTemperatures = (groupedTemperatures: IGroupedTemperatures) => {
     });
   }
 
-  const temperaturesSortedByDay = sortTemperaturesByDay(formattedTemperatures);
-
-  return temperaturesSortedByDay;
+  return formattedTemperatures;
 };
-
-const sortTemperaturesByDay = (temperatures: IWeatherForecast[]) =>
-  temperatures.sort((a, b) => {
-    const daysOfWeek = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ];
-    const dayA = daysOfWeek.indexOf(a.day);
-    const dayB = daysOfWeek.indexOf(b.day);
-    return dayA - dayB;
-  });
 
 const calculateAverageDailyTemperature = (temperatures: number[]) =>
   temperatures.reduce((sum, temperature) => sum + temperature, 0) /

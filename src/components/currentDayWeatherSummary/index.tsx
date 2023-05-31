@@ -24,32 +24,32 @@ function CurrentDayWeatherSummary({
       <StyledForecastSummaryContainer>
         <TemperatureInDegrees
           temperature={minimumTemperature}
-          fontSize={20}
+          fontSize={15}
           fontWeight={700}
           symbolSize={10}
           degreeOffset={-12}
         />
-        <StyledText fontSize={20}>Min</StyledText>
+        <StyledText fontSize={15}>Min</StyledText>
       </StyledForecastSummaryContainer>
       <StyledForecastSummaryContainer>
         <TemperatureInDegrees
           temperature={currentTemperature}
-          fontSize={20}
+          fontSize={15}
           fontWeight={700}
           symbolSize={10}
           degreeOffset={-12}
         />
-        <StyledText fontSize={20}>Current</StyledText>
+        <StyledText fontSize={15}>Current</StyledText>
       </StyledForecastSummaryContainer>
       <StyledForecastSummaryContainer>
         <TemperatureInDegrees
           temperature={maximumTemperature}
-          fontSize={20}
+          fontSize={15}
           fontWeight={700}
           symbolSize={10}
           degreeOffset={-12}
         />
-        <StyledText fontSize={20}>Max</StyledText>
+        <StyledText fontSize={15}>Max</StyledText>
       </StyledForecastSummaryContainer>
     </StyledCurrentDayWeatherSummary>
   );

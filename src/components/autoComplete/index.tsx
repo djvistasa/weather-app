@@ -38,15 +38,15 @@ function AutoComplete({
     { x, y }: ILocationResultCoords,
     title: string,
   ) => {
-    onSelect({ latitude: x, longitude: y }, title);
     setAreOptionsVisible(false);
-    setSearchTerm('');
     Keyboard.dismiss();
+
+    onSelect({ latitude: x, longitude: y }, title);
   };
 
   const handleChange = (value: string) => {
-    onChangeText(value);
     setSearchTerm(value);
+    onChangeText(value);
   };
 
   useEffect(() => {

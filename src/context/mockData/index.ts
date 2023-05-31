@@ -1,5 +1,5 @@
 import { ModalType } from '../../components/modal/enums';
-import { IModalState } from '../types';
+import { IModalState, IUserContext } from '../types';
 
 const defaultModal: IModalState = {
   message: 'Hello',
@@ -14,4 +14,10 @@ const defaultModal: IModalState = {
   presentationStyle: 'overFullScreen',
 };
 
-export { defaultModal };
+const defaultUserProfile: IUserContext = {
+  profile: { favoriteLocations: [], id: '' },
+  updateProfile: () => false,
+  addFavoriteLocation: () => false,
+};
+
+export { defaultModal, defaultUserProfile };
