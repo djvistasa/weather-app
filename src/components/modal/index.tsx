@@ -58,7 +58,7 @@ function Modal(): JSX.Element {
 
   return (
     <StyledModal
-      visible={!!isVisible}
+      visible={isVisible}
       presentationStyle={presentationStyle || 'pageSheet'}
       transparent={isTransparent}
       onRequestClose={hideModal}
