@@ -11,7 +11,7 @@ module.exports = {
       message:
         'What should it be called? (needs to be prefixed with the word use)',
       default: 'useAuth',
-      validate: value => {
+      validate: (value) => {
         if (/.+/.test(value)) {
           return true;
         }
@@ -20,24 +20,15 @@ module.exports = {
       },
     },
   ],
-  actions: data => {
+  actions: (data) => {
     // Generate index.js and index.test.js
-    const componentTemplate = './hook/hook.js.hbs'; // eslint-disable-line no-var
-    const importHookTemplate = './hook/importHookRoot.js.hbs'; // eslint-disable-line no-var
-    const importHooksRootRegex = /\n\nexport {/gm;
+    const componentTemplate = './hook/hook.js.hbs';
 
     const actions = [
       {
         type: 'add',
         path: '../../src/hooks/{{camelCase name}}/index.ts',
         templateFile: componentTemplate,
-        abortOnFail: true,
-      },
-      {
-        type: 'modify',
-        pattern: importHooksRootRegex,
-        path: '../../src/hooks/index.ts',
-        templateFile: importHookTemplate,
         abortOnFail: true,
       },
     ];
