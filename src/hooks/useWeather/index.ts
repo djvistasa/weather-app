@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import { Alert } from 'react-native';
-import { useMutation } from 'react-query';
+import { useCallback, useState } from 'react';
 import { ModalType } from '../../components/modal/enums';
-import { useModalContext } from '../../context';
+import { useAppContext } from '../../context';
 import {
   formatTodaysWeatherResponse,
   formatWeatherForecastResponse,
@@ -12,7 +10,6 @@ import {
   getWeatherForecastByLocation,
 } from './api';
 import {
-  IApiResponse,
   ICoordinates,
   ITodaysWeather,
   ITodaysWeatherResponse,
@@ -23,80 +20,82 @@ import {
 function useWeather() {
   const [todaysWeather, setTodaysWeather] = useState<ITodaysWeather>();
   const [weatherForecast, setWeatherForecast] = useState<IWeatherForecast[]>();
-  const [retryTodaysWeatherCall, setRetryTodaysWeatherCall] =
-    useState<boolean>(true);
+
   const {
     ui: { showModal, hideModal },
-  } = useModalContext();
+  } = useAppContext();
 
-  const {
-    mutate: getTodaysWeather,
-    isLoading: isWeatherLoading,
-    error: getWeatherError,
-  } = useMutation<IApiResponse, unknown, ICoordinates>(
-    'getTodaysWeather',
-    (coords: ICoordinates) => getTodaysWeatherByLocation(coords),
-    {
-      onSuccess: ({ result, ok, error }: IApiResponse) => {
-        if (error) {
-          return showModal({
-            title: 'Error',
-            message: new Error(error as string).message,
-            primaryActionTitle: 'Retry',
-            presentationStyle: 'overFullScreen',
-            isTransparent: true,
-            primaryAction: () => {
-              setRetryTodaysWeatherCall(true);
-            },
-            secondaryActionTitle: 'Cancel',
-            secondaryAction: () => {
-              hideModal();
-            },
-            type: ModalType.Error,
-          });
-        }
+  const getTodaysWeather = useCallback(
+    async (coords: ICoordinates) => {
+      const { error, ok, result } = await getTodaysWeatherByLocation(coords);
 
-        if (ok && result) {
-          const formattedData = formatTodaysWeatherResponse(
-            result as ITodaysWeatherResponse,
-          );
-          setTodaysWeather(formattedData);
-          setRetryTodaysWeatherCall(false);
-        }
-      },
+      if (error) {
+        return showModal({
+          title: 'Get Weather Error',
+          message: new Error(error as string).message,
+          primaryActionTitle: 'Retry',
+          presentationStyle: 'overFullScreen',
+          isTransparent: true,
+          primaryAction: () => {
+            // setRetryTodaysWeatherCall(true);
+          },
+          secondaryActionTitle: 'Cancel',
+          secondaryAction: () => {
+            hideModal();
+          },
+          type: ModalType.Error,
+        });
+      }
+
+      if (ok && result) {
+        const formattedData = formatTodaysWeatherResponse(
+          result as ITodaysWeatherResponse,
+        );
+
+        setTodaysWeather(formattedData);
+      }
     },
+    [hideModal, showModal],
   );
 
-  const {
-    mutate: getWeatherForecast,
-    isLoading: isWeatherForecastLoading,
-    error: getWeatherForecastError,
-  } = useMutation(
-    'getWeatherForeCast',
-    (coords: ICoordinates) => getWeatherForecastByLocation(coords),
-    {
-      onSuccess: ({ result }: IApiResponse) => {
+  const getWeatherForecast = useCallback(
+    async (coords: ICoordinates) => {
+      const { error, ok, result } = await getWeatherForecastByLocation(coords);
+
+      if (error) {
+        return showModal({
+          title: 'Error',
+          message: new Error(error as string).message,
+          primaryActionTitle: 'Retry',
+          presentationStyle: 'overFullScreen',
+          isTransparent: true,
+          primaryAction: () => {
+            // act on primary action
+          },
+          secondaryActionTitle: 'Cancel',
+          secondaryAction: () => {
+            hideModal();
+          },
+          type: ModalType.Error,
+        });
+      }
+
+      if (result && ok) {
         const formattedData = formatWeatherForecastResponse(
           result as IWeatherForecastResponse,
         );
+
         setWeatherForecast(formattedData);
-      },
-      onError: (error) => {
-        Alert.alert('Error', error as string);
-      },
+      }
     },
+    [hideModal, showModal],
   );
 
   return {
     getTodaysWeather,
     getWeatherForecast,
-    isWeatherLoading,
-    getWeatherError,
     todaysWeather,
-    isWeatherForecastLoading,
-    getWeatherForecastError,
     weatherForecast,
-    retryTodaysWeatherCall,
   };
 }
 

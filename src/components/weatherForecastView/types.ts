@@ -3,10 +3,19 @@ import { IWeatherForecast } from '../../hooks/useWeather/types';
 interface IWeatherForecastViewProps {
   weatherForecast: IWeatherForecast[];
   weatherCondition: string;
+  onAddToFavorites: () => void;
 }
 
-interface IStyledWeatherForecastViewProps {
+interface IStyledWeatherForecastContainerViewProps {
   backgroundColor: string;
 }
 
-export type { IStyledWeatherForecastViewProps, IWeatherForecastViewProps };
+interface IStyledWeatherForecastViewProps {
+  isLastItem: boolean;
+}
+
+export type {
+  IStyledWeatherForecastContainerViewProps,
+  IStyledWeatherForecastViewProps,
+  IWeatherForecastViewProps,
+};

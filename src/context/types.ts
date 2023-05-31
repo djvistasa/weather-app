@@ -1,5 +1,5 @@
 import { ModalType } from '../components/modal/enums';
-import { ICoordinates } from '../hooks/useWeather/types';
+import { IAddress } from '../hooks/useLocation/types';
 
 interface IModalContext {
   children: JSX.Element;
@@ -31,12 +31,13 @@ interface IUiContext {
 
 interface IUserProfileState {
   id: string;
-  favoriteLocations: ICoordinates[];
+  favoriteLocations: IAddress[];
 }
 
 interface IUserContext {
-  profile: IUserProfileState | undefined;
+  profile: IUserProfileState;
   updateProfile: (profile: IUserProfileState) => void;
+  addFavoriteLocation: (address: IAddress) => void;
 }
 
 export type {

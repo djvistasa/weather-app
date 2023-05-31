@@ -3,7 +3,7 @@ import { ButtonVariant } from './enums';
 interface IButtonProps {
   title: string;
   onPress: () => void;
-  variant: ButtonVariant;
+  variant?: ButtonVariant;
 }
 
 interface IStyledButtonProps {

@@ -7,6 +7,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
 import * as icons from '../../assets';
+import Button from '../button';
 import { StyledText } from '../common';
 import { WeatherCondition } from '../currentDayWeatherView/enums';
 import TemperatureInDegrees from '../temperatureInDegrees';
@@ -21,6 +22,7 @@ import { IWeatherForecastViewProps } from './types';
 function WeatherForecastView({
   weatherForecast,
   weatherCondition,
+  onAddToFavorites,
 }: IWeatherForecastViewProps): JSX.Element {
   const {
     colors: { cloudy, rainy, sunny },
@@ -53,25 +55,33 @@ function WeatherForecastView({
   };
 
   return (
-    <StyledWeatherForecastViewContainer backgroundColor={getBackgroundByType()}>
-      {weatherForecast.map(({ type, day, temperature }) => (
-        <StyledWeatherForecastView key={day}>
-          <StyledDayContainer>
-            <StyledText fontSize={18}>{day}</StyledText>
-          </StyledDayContainer>
-          <StyledWeatherIcon source={getIconByType(type)} />
-          <StyledTemperatureInDegrees>
-            <TemperatureInDegrees
-              temperature={temperature}
-              degreeOffset={-12}
-              symbolSize={10}
-              fontSize={18}
-              fontWeight={700}
-            />
-          </StyledTemperatureInDegrees>
-        </StyledWeatherForecastView>
-      ))}
-    </StyledWeatherForecastViewContainer>
+    <>
+      <StyledWeatherForecastViewContainer
+        backgroundColor={getBackgroundByType()}
+      >
+        {weatherForecast.map(({ type, day, temperature }, index) => (
+          <StyledWeatherForecastView
+            key={day}
+            isLastItem={index === weatherForecast.length - 1}
+          >
+            <StyledDayContainer>
+              <StyledText fontSize={18}>{day}</StyledText>
+            </StyledDayContainer>
+            <StyledWeatherIcon source={getIconByType(type)} />
+            <StyledTemperatureInDegrees>
+              <TemperatureInDegrees
+                temperature={temperature}
+                degreeOffset={-12}
+                symbolSize={10}
+                fontSize={18}
+                fontWeight={700}
+              />
+            </StyledTemperatureInDegrees>
+          </StyledWeatherForecastView>
+        ))}
+      </StyledWeatherForecastViewContainer>
+      <Button title="Add to favorites" onPress={onAddToFavorites} />
+    </>
   );
 }
 

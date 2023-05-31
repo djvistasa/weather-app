@@ -33,7 +33,7 @@ const StyledModalWrapper = styled.View`
 `;
 
 const StyledModalInner = styled.View`
-  height: 50%;
+  min-height: 40%;
   background-color: ${({
     theme: {
       colors: { white },

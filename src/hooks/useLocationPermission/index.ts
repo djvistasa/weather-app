@@ -2,14 +2,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { ModalType } from '../../components/modal/enums';
-import { useModalContext } from '../../context';
+import { useAppContext } from '../../context';
 import useAppSettings from '../useAppSettings';
 
 function useLocationPermission() {
   const openAppSettings = useAppSettings();
   const {
     ui: { showModal, hideModal },
-  } = useModalContext();
+  } = useAppContext();
   const [hasGrantedPermission, setHasGrantedPermission] =
     useState<boolean>(false);
 

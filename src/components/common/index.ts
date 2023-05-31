@@ -22,4 +22,23 @@ const StyledText = styled.Text<IStyledTextProps>`
   ${({ fontWeight }) => fontWeight && `font-weight: ${fontWeight}`};
 `;
 
-export { StyledApplicationWrapper, StyledSafeAreaView, StyledText };
+const StyledAutoCompeteWrapper = styled.View`
+  flex-direction: row;
+  flex: 1;
+`;
+
+const StyledActionsWrapper = styled.View`
+  width: 100%;
+  position: absolute;
+  top: 20px;
+  flex-direction: row;
+  padding: 0 20px;
+`;
+
+export {
+  StyledActionsWrapper,
+  StyledApplicationWrapper,
+  StyledAutoCompeteWrapper,
+  StyledSafeAreaView,
+  StyledText,
+};

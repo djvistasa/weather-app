@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { useModalContext } from '../../context/';
+import { useAppContext } from '../../context/';
 import Button from '../button';
 import { ButtonVariant } from '../button/enums';
 import { StyledSafeAreaView, StyledText } from '../common';
@@ -38,7 +38,7 @@ function Modal(): JSX.Element {
         isTransparent,
       },
     },
-  } = useModalContext();
+  } = useAppContext();
   const {
     colors: { cloudy, success, error, warning },
   } = useTheme();
@@ -58,9 +58,9 @@ function Modal(): JSX.Element {
 
   return (
     <StyledModal
-      visible={!!isVisible}
+      visible={isVisible}
       presentationStyle={presentationStyle || 'pageSheet'}
-      transparent={!!isTransparent}
+      transparent={isTransparent}
       onRequestClose={hideModal}
     >
       <StyledSafeAreaView>
