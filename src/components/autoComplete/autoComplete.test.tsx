@@ -1,8 +1,11 @@
-import { render } from '@testing-library/react-native';
 import React from 'react';
+
 import AutoComplete from '.';
+import { renderWithTheme } from '../../utils/tests';
 
 test('does component render', () => {
-  const tree = render(<AutoComplete />);
+  const tree = renderWithTheme(
+    <AutoComplete onChangeText={jest.fn()} onSelect={jest.fn()} options={[]} />,
+  );
   tree;
 });

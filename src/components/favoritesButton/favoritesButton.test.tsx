@@ -1,8 +1,8 @@
-import { render } from '@testing-library/react-native';
 import React from 'react';
 import FavoritesButton from '.';
+import { renderWithTheme } from '../../utils/tests';
 
 test('does component render', () => {
-  const tree = render(<FavoritesButton />);
+  const tree = renderWithTheme(<FavoritesButton onPress={jest.fn} />);
   tree;
 });

@@ -116,7 +116,7 @@ const calculateAverageDailyTemperature = (temperatures: number[]) =>
   temperatures.length;
 
 const truncate = (input: string, limit: number) =>
-  input.length > limit ? `${input.substring(0, limit)}...` : input;
+  input && input.length > limit ? `${input.substring(0, limit)}...` : input;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function debounce<T extends Function>(callBack: T, delay = 20) {
