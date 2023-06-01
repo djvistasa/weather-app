@@ -1,8 +1,8 @@
-import { render } from '@testing-library/react-native';
 import React from 'react';
 import Modal from '.';
+import { renderWithTheme } from '../../utils/tests';
 
 test('does component render', () => {
-  const tree = render(<Modal />);
+  const tree = renderWithTheme(<Modal />);
   tree;
 });

@@ -5,10 +5,10 @@
  */
 
 import React from 'react';
-import { Marker } from 'react-native-maps';
+
 import { useAppContext } from '../../context';
 import useLocation from '../../hooks/useLocation';
-import { StyledMap } from './styles';
+import { StyledMap, StyledMarker } from './styles';
 import { IMapProps } from './types';
 
 function Map(_props: IMapProps): JSX.Element | null {
@@ -29,7 +29,7 @@ function Map(_props: IMapProps): JSX.Element | null {
       }}
     >
       {favoriteLocations.map((location) => (
-        <Marker
+        <StyledMarker
           key={location.title}
           coordinate={{
             latitude: location.coords.latitude,

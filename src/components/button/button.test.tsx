@@ -1,8 +1,8 @@
-import { render } from '@testing-library/react-native';
 import React from 'react';
 import Button from '.';
+import { renderWithTheme } from '../../utils/tests';
 
 test('does component render', () => {
-  const tree = render(<Button title="" onPress={jest.fn()}/>);
+  const tree = renderWithTheme(<Button title="" onPress={jest.fn()} />);
   tree;
 });

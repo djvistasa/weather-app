@@ -1,8 +1,8 @@
-import { render } from '@testing-library/react-native';
 import React from 'react';
 import Locations from '.';
+import { renderWithTheme } from '../../utils/tests';
 
 test('does component render', () => {
-  const tree = render(<Locations />);
+  const tree = renderWithTheme(<Locations locations={[]} />);
   tree;
 });

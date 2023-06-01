@@ -1,8 +1,8 @@
-import { render } from '@testing-library/react-native';
 import React from 'react';
 import TextInput from '.';
+import { renderWithTheme } from '../../utils/tests';
 
 test('does component render', () => {
-  const tree = render(<TextInput />);
+  const tree = renderWithTheme(<TextInput />);
   tree;
 });
