@@ -12,7 +12,7 @@ const StyledBackButton = styled.TouchableOpacity`
   border-radius: 47px;
   align-items: center;
   justify-content: center;
-
+  z-index: 1;
   border: ${({
     theme: {
       colors: { white },

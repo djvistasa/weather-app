@@ -41,7 +41,7 @@ function AutoComplete({
     setAreOptionsVisible(false);
     Keyboard.dismiss();
 
-    onSelect({ latitude: x, longitude: y }, title);
+    onSelect({ latitude: y, longitude: x }, title);
   };
 
   const handleChange = (value: string) => {
