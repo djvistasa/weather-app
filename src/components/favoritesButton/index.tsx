@@ -15,20 +15,22 @@ import {
 } from './styles';
 import { IFavoritesButtonProps } from './types';
 
-function FavoritesButton(_props: IFavoritesButtonProps): JSX.Element {
+function FavoritesButton({ onPress }: IFavoritesButtonProps): JSX.Element {
   const {
     user: { profile },
   } = useAppContext();
   return (
-    <StyledFavoritesButton>
-      {profile.favoriteLocations.length && (
+    <StyledFavoritesButton
+      onPress={onPress}
+      disabled={profile.favoriteLocations.length === 0}
+    >
+      {profile.favoriteLocations.length > 0 && (
         <StyledCounterWrapper>
           <StyledText fontSize={15}>
             {profile.favoriteLocations.length}
           </StyledText>
         </StyledCounterWrapper>
       )}
-
       <StyledFavoritesIcon source={icons.starIcon} resizeMode="contain" />
     </StyledFavoritesButton>
   );
