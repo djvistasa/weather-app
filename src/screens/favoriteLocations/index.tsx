@@ -4,13 +4,20 @@
  *
  */
 import React from 'react';
-import { StyledApplicationWrapper } from '../../components/common';
+import ApplicationWrapper from '../../components/applicationWrapper';
+import Locations from '../../components/locations';
+import { useAppContext } from '../../context';
 
 function FavoriteLocations(): JSX.Element {
+  const {
+    user: {
+      profile: { favoriteLocations },
+    },
+  } = useAppContext();
   return (
-    <StyledApplicationWrapper>
-      <></>
-    </StyledApplicationWrapper>
+    <ApplicationWrapper hasBackButton title="Favorite Locations">
+      <Locations locations={favoriteLocations} />
+    </ApplicationWrapper>
   );
 }
 
