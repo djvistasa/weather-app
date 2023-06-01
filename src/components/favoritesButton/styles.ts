@@ -18,6 +18,7 @@ const StyledFavoritesButton = styled.TouchableOpacity`
   margin-left: 10px;
   align-items: center;
   justify-content: center;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
 const StyledFavoritesIcon = styled.Image`
