@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useMutation } from 'react-query';
 import { ModalType } from '../../components/modal/enums';
 import { useAppContext } from '../../context';
 import {
@@ -10,6 +11,7 @@ import {
   getWeatherForecastByLocation,
 } from './api';
 import {
+  IApiResponse,
   ICoordinates,
   ITodaysWeather,
   ITodaysWeatherResponse,
@@ -20,42 +22,49 @@ import {
 function useWeather() {
   const [todaysWeather, setTodaysWeather] = useState<ITodaysWeather>();
   const [weatherForecast, setWeatherForecast] = useState<IWeatherForecast[]>();
+  const [shouldRetryTodaysWeatherCall, setShouldRetryTodaysWeatherCall] =
+    useState<boolean>(false);
 
   const {
     ui: { showModal, hideModal },
   } = useAppContext();
 
-  const getTodaysWeather = useCallback(
-    async (coords: ICoordinates) => {
-      const { error, ok, result } = await getTodaysWeatherByLocation(coords);
+  const { mutate: getTodaysWeather } = useMutation<
+    IApiResponse,
+    unknown,
+    ICoordinates
+  >(
+    'getTodaysWeather',
+    (coords: ICoordinates) => getTodaysWeatherByLocation(coords),
+    {
+      onSuccess: ({ result, ok, error }: IApiResponse) => {
+        if (error) {
+          return showModal({
+            title: 'Get Weather Error',
+            message: new Error(error as string).message,
+            primaryActionTitle: 'Retry',
+            presentationStyle: 'overFullScreen',
+            isTransparent: true,
+            primaryAction: () => {
+              setShouldRetryTodaysWeatherCall(true);
+            },
+            secondaryActionTitle: 'Cancel',
+            secondaryAction: () => {
+              hideModal();
+            },
+            type: ModalType.Error,
+          });
+        }
 
-      if (error) {
-        return showModal({
-          title: 'Get Weather Error',
-          message: new Error(error as string).message,
-          primaryActionTitle: 'Retry',
-          presentationStyle: 'overFullScreen',
-          isTransparent: true,
-          primaryAction: () => {
-            // setRetryTodaysWeatherCall(true);
-          },
-          secondaryActionTitle: 'Cancel',
-          secondaryAction: () => {
-            hideModal();
-          },
-          type: ModalType.Error,
-        });
-      }
+        if (ok && result) {
+          const formattedData = formatTodaysWeatherResponse(
+            result as ITodaysWeatherResponse,
+          );
 
-      if (ok && result) {
-        const formattedData = formatTodaysWeatherResponse(
-          result as ITodaysWeatherResponse,
-        );
-
-        setTodaysWeather(formattedData);
-      }
+          setTodaysWeather(formattedData);
+        }
+      },
     },
-    [hideModal, showModal],
   );
 
   const getWeatherForecast = useCallback(
@@ -94,6 +103,7 @@ function useWeather() {
   return {
     getTodaysWeather,
     getWeatherForecast,
+    shouldRetryTodaysWeatherCall,
     todaysWeather,
     weatherForecast,
   };
