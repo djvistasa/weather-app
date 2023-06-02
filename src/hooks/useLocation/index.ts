@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import Geolocation from 'react-native-geolocation-service';
 
+import { useMutation } from 'react-query';
 import { IAutoCompleteSelectOption } from '../../components/autoComplete/types';
 import { ModalType } from '../../components/modal/enums';
 import { useAppContext } from '../../context';
-import { debounce } from '../../utils';
 import useLocationPermission from '../useLocationPermission';
-import { ICoordinates } from '../useWeather/types';
+import { IApiResponse, ICoordinates } from '../useWeather/types';
 import { geoCode } from './api';
 import { IAddress, IGeoCodeResponse, ILocationResultItem } from './types';
 
@@ -53,36 +53,35 @@ const useLocation = () => {
       value,
     }));
 
-  const getAddressSuggestions = debounce(async (searchTerm: string) => {
-    if (deviceLocation) {
-      const { result, ok, error } = await geoCode(
-        searchTerm,
-        deviceLocation as ICoordinates,
-      );
+  const { mutate: getAddressSuggestions } = useMutation(
+    'getAddressSuggestions',
+    (searchTerm: string) => geoCode(searchTerm, deviceLocation as ICoordinates),
+    {
+      onSuccess: ({ result, error, ok }: IApiResponse) => {
+        if (error) {
+          return showModal({
+            message: new Error(error as string).message,
+            primaryAction: () => false,
+            primaryActionTitle: 'Okay',
+            secondaryAction: hideModal,
+            secondaryActionTitle: 'Cancel',
+            type: ModalType.Error,
+            title: 'Location Error',
+          });
+        }
 
-      if (error) {
-        return showModal({
-          message: new Error(error as string).message,
-          primaryAction: () => false,
-          primaryActionTitle: 'Okay',
-          secondaryAction: hideModal,
-          secondaryActionTitle: 'Cancel',
-          type: ModalType.Error,
-          title: 'Location Error',
-        });
-      }
+        if (ok && result) {
+          const response = result as IGeoCodeResponse;
 
-      if (ok && result) {
-        const response = result as IGeoCodeResponse;
+          const formattedSuggestions = formatLocationSearchResults(
+            response.candidates,
+          );
 
-        const formattedSuggestions = formatLocationSearchResults(
-          response.candidates,
-        );
-
-        setAddressSuggestions(formattedSuggestions);
-      }
-    }
-  }, 500);
+          setAddressSuggestions(formattedSuggestions);
+        }
+      },
+    },
+  );
 
   const addAddressToFavorites = () => {
     if (address) {

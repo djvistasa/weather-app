@@ -20,6 +20,7 @@ import useLocation from '../../hooks/useLocation';
 import useWeather from '../../hooks/useWeather';
 import { ICoordinates } from '../../hooks/useWeather/types';
 import { RootStackParamList } from '../../navigation/types';
+import { debounce } from '../../utils';
 
 function Home(): JSX.Element {
   const {
@@ -42,11 +43,11 @@ function Home(): JSX.Element {
 
   const handleFavorites = () => navigate('FavoriteLocations');
 
-  const handleLocationSearch = (searchTerm: string) => {
+  const handleLocationSearch = debounce((searchTerm: string) => {
     if (searchTerm.length > 0) {
       getAddressSuggestions(searchTerm);
     }
-  };
+  }, 500);
 
   const handleLocationSelect = (location: ICoordinates, title: string) => {
     updateAddress({ coords: location, title });
