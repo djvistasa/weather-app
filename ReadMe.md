@@ -62,3 +62,5 @@ The Weather App showcases my ability to build a React Native application using v
 If you have any questions or need further assistance, feel free to contact me.
 
 Thank you for using the Weather App!
+
+## PS: This ReadMe file was created using chat GPT
