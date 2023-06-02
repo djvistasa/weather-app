@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { ModalType } from '../../components/modal/enums';
 import { useAppContext } from '../../context';
@@ -67,37 +67,36 @@ function useWeather() {
     },
   );
 
-  const getWeatherForecast = useCallback(
-    async (coords: ICoordinates) => {
-      const { error, ok, result } = await getWeatherForecastByLocation(coords);
-
-      if (error) {
-        return showModal({
-          title: 'Error',
-          message: new Error(error as string).message,
-          primaryActionTitle: 'Retry',
-          presentationStyle: 'overFullScreen',
-          isTransparent: true,
-          primaryAction: () => {
-            // act on primary action
-          },
-          secondaryActionTitle: 'Cancel',
-          secondaryAction: () => {
-            hideModal();
-          },
-          type: ModalType.Error,
-        });
-      }
-
-      if (result && ok) {
-        const formattedData = formatWeatherForecastResponse(
-          result as IWeatherForecastResponse,
-        );
-
-        setWeatherForecast(formattedData);
-      }
+  const { mutate: getWeatherForecast } = useMutation(
+    'getWeatherForeCast',
+    (coords: ICoordinates) => getWeatherForecastByLocation(coords),
+    {
+      onSuccess: ({ result, error, ok }: IApiResponse) => {
+        if (error) {
+          return showModal({
+            title: 'Error',
+            message: new Error(error as string).message,
+            primaryActionTitle: 'Retry',
+            presentationStyle: 'overFullScreen',
+            isTransparent: true,
+            primaryAction: () => {
+              // act on primary action
+            },
+            secondaryActionTitle: 'Cancel',
+            secondaryAction: () => {
+              hideModal();
+            },
+            type: ModalType.Error,
+          });
+        }
+        if (result && ok) {
+          const formattedData = formatWeatherForecastResponse(
+            result as IWeatherForecastResponse,
+          );
+          setWeatherForecast(formattedData);
+        }
+      },
     },
-    [hideModal, showModal],
   );
 
   return {
