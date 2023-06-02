@@ -53,7 +53,7 @@ Once the Weather App is running on your device, you can perform the following ac
 
 ## Testing
 
-Unit tests are implemented in the Weather App using the Jest testing framework. As of now, there is one unit test available for the button component. However, considering the usage of TypeScript, the type system already helps in ensuring the correctness of the code, which reduces the need for unit tests in some cases. We can discuss whether additional tests are necessary based on the specific requirements and complexity of the application.
+Unit tests are implemented in the Weather App using the Jest testing framework. As of now, there is one unit test available for the button component.This unit test takes into account code coverage. However, considering the usage of TypeScript, the type system already helps in ensuring the correctness of the code, which reduces the need for unit tests in some cases. We can discuss whether additional tests are necessary based on the specific requirements and complexity of the application.
 
 To run the unit tests, use the following command: `yarn test`
 
